@@ -1,0 +1,16 @@
+# Build output
+build/
+out/
+
+# vcpkg installed packages
+vcpkg_installed/
+
+# IDE files
+.vs/
+.vscode/
+*.user
+
+# CMake cache
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake

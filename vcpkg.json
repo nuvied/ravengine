@@ -1,0 +1,10 @@
+{
+  "name": "ravengine",
+  "version": "0.1.0",
+  "description": "A simple basic game engine by Blue Raven",
+  "dependencies": [
+    "sdl2",
+    "glm",
+    "spdlog"
+  ]
+}
