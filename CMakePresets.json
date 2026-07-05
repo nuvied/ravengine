@@ -1,38 +1,19 @@
 {
-  "version": 3,
-  "configurePresets": [
-    {
-      "name": "vcpkg",
-      "displayName": "Default vcpkg preset",
-      "description": "Configure with vcpkg toolchain",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_TOOLCHAIN_FILE": {
-          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-          "type": "FILEPATH"
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "Clang 22.1.7 x86_64-pc-windows-msvc",
+            "displayName": "Clang 22.1.7 x86_64-pc-windows-msvc",
+            "description": "Using compilers: C = C:\\Program Files\\LLVM\\bin\\clang.exe, CXX = C:\\Program Files\\LLVM\\bin\\clang++.exe",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "C:/Program Files/LLVM/bin/clang.exe",
+                "CMAKE_CXX_COMPILER": "C:/Program Files/LLVM/bin/clang++.exe",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-windows",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
         }
-      }
-    },
-    {
-      "name": "vcpkg-release",
-      "displayName": "Release vcpkg preset",
-      "description": "Configure with vcpkg toolchain in release mode",
-      "inherits": "vcpkg",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "vcpkg",
-      "configurePreset": "vcpkg"
-    },
-    {
-      "name": "vcpkg-release",
-      "configurePreset": "vcpkg-release"
-    }
-  ]
+    ]
 }
