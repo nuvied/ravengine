@@ -69,14 +69,14 @@ bool show_basic_window(const char* title, int width, int height)
     }
 
     renderer renderer;
-    // if (!renderer.init(native_window_handle,
-    //                          native_display_handle,
-    //                          static_cast<uint32_t>(width),
-    //                          static_cast<uint32_t>(height))) {
-    //     SDL_DestroyWindow(window);
-    //     SDL_Quit();
-    //     return false;
-    // }
+    if (!renderer.init(native_window_handle,
+                             native_display_handle,
+                             static_cast<uint32_t>(width),
+                             static_cast<uint32_t>(height))) {
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return false;
+    }
 
     bool running = true;
     while (running) {
@@ -92,16 +92,16 @@ bool show_basic_window(const char* title, int width, int height)
                 (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)) {
                 const int new_width = event.window.data1;
                 const int new_height = event.window.data2;
-                // if (new_width > 0 && new_height > 0) {
-                //     renderer.resize(static_cast<uint32_t>(new_width), static_cast<uint32_t>(new_height));
-                // }
+                if (new_width > 0 && new_height > 0) {
+                    renderer.resize(static_cast<uint32_t>(new_width), static_cast<uint32_t>(new_height));
+                }
             }
         }
 
-       // renderer.render();
+        renderer.render();
     }
 
-    // renderer.shutdown();
+    renderer.shutdown();
     SDL_DestroyWindow(window);
     SDL_Quit();
 

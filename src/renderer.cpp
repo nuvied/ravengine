@@ -20,6 +20,7 @@ bool renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_
     init.resolution.width      = m_width;
     init.resolution.height     = m_height;
     init.resolution.reset      = BGFX_RESET_VSYNC;
+    init.platformData         = pd;
     if(!bgfx::init(init)) {
         spdlog::error("Failed to initialize bgfx.");
         return false;
