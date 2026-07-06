@@ -1,6 +1,8 @@
 #include "ravengine/windows.h"
+#include "renderer.h"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_syswm.h>
 #include <spdlog/spdlog.h>
 
 namespace ravengine {
@@ -26,13 +28,48 @@ bool show_basic_window(const char* title, int width, int height)
         return false;
     }
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == nullptr) {
-        spdlog::error("SDL_CreateRenderer failed: {}", SDL_GetError());
+    // Retrieve native window/display handles for bgfx.
+    SDL_SysWMinfo wmi;
+    SDL_VERSION(&wmi.version);
+    if (!SDL_GetWindowWMInfo(window, &wmi)) {
+        spdlog::error("SDL_GetWindowWMInfo failed: {}", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
         return false;
     }
+
+    void* nwh = nullptr;
+    void* ndt = nullptr;
+    switch (wmi.subsystem) {
+#if defined(SDL_VIDEO_DRIVER_COCOA)
+        case SDL_SYSWM_COCOA:   nwh = wmi.info.cocoa.window;                               break;
+#endif
+#if defined(SDL_VIDEO_DRIVER_WINDOWS)
+        case SDL_SYSWM_WINDOWS: nwh = wmi.info.win.window;                                 break;
+#endif
+#if defined(SDL_VIDEO_DRIVER_X11)
+        case SDL_SYSWM_X11:     nwh = reinterpret_cast<void*>(wmi.info.x11.window);
+                                ndt = wmi.info.x11.display;                                break;
+#endif
+#if defined(SDL_VIDEO_DRIVER_WAYLAND)
+        case SDL_SYSWM_WAYLAND: nwh = wmi.info.wl.surface;
+                                ndt = wmi.info.wl.display;                                 break;
+#endif
+        default:
+            spdlog::error("Unsupported window subsystem ({}), cannot init bgfx.", static_cast<int>(wmi.subsystem));
+            SDL_DestroyWindow(window);
+            SDL_Quit();
+            return false;
+    }
+
+    renderer gfx;
+    if(nwh == nullptr) {
+        spdlog::error("Failed to retrieve native window handle, cannot init bgfx.");
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return false;
+    }
+    gfx.init(nwh, ndt, static_cast<uint16_t>(width), static_cast<uint16_t>(height));
 
     bool running = true;
     while (running) {
@@ -46,12 +83,10 @@ bool show_basic_window(const char* title, int width, int height)
             }
         }
 
-        SDL_SetRenderDrawColor(renderer, 24, 28, 36, 255);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
+        gfx.render();
     }
 
-    SDL_DestroyRenderer(renderer);
+    gfx.shutdown();
     SDL_DestroyWindow(window);
     SDL_Quit();
 
