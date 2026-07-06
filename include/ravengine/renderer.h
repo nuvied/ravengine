@@ -5,7 +5,8 @@
 
 class renderer {
 public:
-    void init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height);
+    bool init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height);
+    void resize(uint32_t width, uint32_t height);
     void shutdown();
     void render();
 

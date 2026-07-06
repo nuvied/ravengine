@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include <spdlog/spdlog.h>
 
-void renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, u_int32_t height)
+bool renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height)
 {
     m_width  = width;
     m_height = height;
@@ -21,15 +21,23 @@ void renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_
     init.resolution.height     = m_height;
     init.resolution.reset      = BGFX_RESET_VSYNC;
     if(!bgfx::init(init)) {
-        // Handle initialization failure
         spdlog::error("Failed to initialize bgfx.");
-        return;
+        return false;
     }
 
     bgfx::setViewClear(m_mainView,
         BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,
         m_clearColor,
         1.0f, 0);
+    bgfx::setViewRect(m_mainView, 0, 0, m_width, m_height);
+    return true;
+}
+
+void renderer::resize(uint32_t width, uint32_t height)
+{
+    m_width = width;
+    m_height = height;
+    bgfx::reset(m_width, m_height, BGFX_RESET_VSYNC);
     bgfx::setViewRect(m_mainView, 0, 0, m_width, m_height);
 }
 

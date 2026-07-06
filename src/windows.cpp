@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
-#include <bgfx/bgfx.h>
 #include <bx/platform.h>
 #include <cstdint>
 #include <spdlog/spdlog.h>
@@ -49,41 +48,35 @@ bool show_basic_window(const char* title, int width, int height)
         return false;
     }
 
-    bgfx::PlatformData platform_data{};
+    void* native_window_handle = nullptr;
+    void* native_display_handle = nullptr;
 #if BX_PLATFORM_WINDOWS
-    platform_data.nwh = wm_info.info.win.window;
+    native_window_handle = wm_info.info.win.window;
 #elif BX_PLATFORM_OSX
-    platform_data.nwh = wm_info.info.cocoa.window;
+    native_window_handle = wm_info.info.cocoa.window;
 #elif BX_PLATFORM_LINUX || BX_PLATFORM_BSD
-    platform_data.ndt = wm_info.info.x11.display;
-    platform_data.nwh = reinterpret_cast<void*>(static_cast<uintptr_t>(wm_info.info.x11.window));
+    native_display_handle = wm_info.info.x11.display;
+    native_window_handle = reinterpret_cast<void*>(static_cast<uintptr_t>(wm_info.info.x11.window));
 #else
 #error "Unsupported platform for SDL window handle extraction"
 #endif
 
-    if (platform_data.nwh == nullptr) {
+    if (native_window_handle == nullptr) {
         spdlog::error("Platform window handle is null; cannot initialize bgfx.");
         SDL_DestroyWindow(window);
         SDL_Quit();
         return false;
     }
 
-    bgfx::Init init{};
-    init.type = bgfx::RendererType::Count;
-    init.platformData = platform_data;
-    init.resolution.width = static_cast<uint32_t>(width);
-    init.resolution.height = static_cast<uint32_t>(height);
-    init.resolution.reset = BGFX_RESET_VSYNC;
-
-    if (!bgfx::init(init)) {
-        spdlog::error("bgfx::init failed.");
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return false;
-    }
-
-    bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x181C24FF, 1.0f, 0);
-    bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
+    renderer renderer;
+    // if (!renderer.init(native_window_handle,
+    //                          native_display_handle,
+    //                          static_cast<uint32_t>(width),
+    //                          static_cast<uint32_t>(height))) {
+    //     SDL_DestroyWindow(window);
+    //     SDL_Quit();
+    //     return false;
+    // }
 
     bool running = true;
     while (running) {
@@ -99,17 +92,16 @@ bool show_basic_window(const char* title, int width, int height)
                 (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)) {
                 const int new_width = event.window.data1;
                 const int new_height = event.window.data2;
-                if (new_width > 0 && new_height > 0) {
-                    bgfx::reset(static_cast<uint32_t>(new_width), static_cast<uint32_t>(new_height), BGFX_RESET_VSYNC);
-                }
+                // if (new_width > 0 && new_height > 0) {
+                //     renderer.resize(static_cast<uint32_t>(new_width), static_cast<uint32_t>(new_height));
+                // }
             }
         }
 
-        bgfx::touch(0);
-        bgfx::frame();
+       // renderer.render();
     }
 
-    bgfx::shutdown();
+    // renderer.shutdown();
     SDL_DestroyWindow(window);
     SDL_Quit();
 
