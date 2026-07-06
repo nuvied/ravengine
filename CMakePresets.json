@@ -16,7 +16,7 @@
             }
         },
         {
-            "name": "AppleClang arm64-apple-darwin",
+            "name": "appleclang-arm64-apple-darwin",
             "displayName": "AppleClang arm64-apple-darwin",
             "description": "Using the system AppleClang toolchain on macOS",
             "binaryDir": "${sourceDir}/build/${presetName}",
@@ -33,7 +33,7 @@
             }
         },
         {
-            "name": "AppleClang x86_64-apple-darwin",
+            "name": "appleclang-x86_64-apple-darwin",
             "displayName": "AppleClang x86_64-apple-darwin",
             "description": "Using the system AppleClang toolchain on macOS",
             "binaryDir": "${sourceDir}/build/${presetName}",
@@ -52,22 +52,22 @@
     ],
     "buildPresets": [
         {
-            "name": "AppleClang arm64-apple-darwin",
+            "name": "appleclang-arm64-apple-darwin",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
             },
-            "configurePreset": "AppleClang arm64-apple-darwin"
+            "configurePreset": "appleclang-arm64-apple-darwin"
         },
         {
-            "name": "AppleClang x86_64-apple-darwin",
+            "name": "appleclang-x86_64-apple-darwin",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Darwin"
             },
-            "configurePreset": "AppleClang x86_64-apple-darwin"
+            "configurePreset": "appleclang-x86_64-apple-darwin"
         }
     ]
 }
