@@ -53,10 +53,20 @@
     "buildPresets": [
         {
             "name": "AppleClang arm64-apple-darwin",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
             "configurePreset": "AppleClang arm64-apple-darwin"
         },
         {
             "name": "AppleClang x86_64-apple-darwin",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
             "configurePreset": "AppleClang x86_64-apple-darwin"
         }
     ]
