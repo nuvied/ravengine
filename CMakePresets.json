@@ -14,6 +14,60 @@
                 "VCPKG_TARGET_TRIPLET": "x64-windows",
                 "CMAKE_BUILD_TYPE": "Debug"
             }
+        },
+        {
+            "name": "appleclang-arm64-apple-darwin",
+            "displayName": "AppleClang arm64-apple-darwin",
+            "description": "Using the system AppleClang toolchain on macOS",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_TARGET_TRIPLET": "arm64-osx",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "appleclang-x86_64-apple-darwin",
+            "displayName": "AppleClang x86_64-apple-darwin",
+            "description": "Using the system AppleClang toolchain on macOS",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_TARGET_TRIPLET": "x64-osx",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "appleclang-arm64-apple-darwin",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "configurePreset": "appleclang-arm64-apple-darwin"
+        },
+        {
+            "name": "appleclang-x86_64-apple-darwin",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "configurePreset": "appleclang-x86_64-apple-darwin"
         }
     ]
 }
