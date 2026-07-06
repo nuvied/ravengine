@@ -32,11 +32,13 @@ add_executable(ravengine
 	src/main.cpp
 	src/engine.cpp
 	src/windows.cpp
+	src/renderer.cpp
 )
 
 target_include_directories(ravengine
 	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/include
+		${CMAKE_CURRENT_SOURCE_DIR}/include/ravengine
 )
 
 target_link_libraries(ravengine
