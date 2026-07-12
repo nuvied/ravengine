@@ -31,7 +31,7 @@ endif()
 add_executable(ravengine
 	src/main.cpp
 	src/engine.cpp
-	src/windows.cpp
+	src/window.cpp
 	src/renderer.cpp
 )
 
