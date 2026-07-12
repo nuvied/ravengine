@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include <spdlog/spdlog.h>
 
-bool renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height)
+bool Renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height)
 {
     m_width  = width;
     m_height = height;
@@ -34,7 +34,7 @@ bool renderer::init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_
     return true;
 }
 
-void renderer::resize(uint32_t width, uint32_t height)
+void Renderer::resize(uint32_t width, uint32_t height)
 {
     m_width = width;
     m_height = height;
@@ -42,12 +42,12 @@ void renderer::resize(uint32_t width, uint32_t height)
     bgfx::setViewRect(m_mainView, 0, 0, m_width, m_height);
 }
 
-void renderer::shutdown()
+void Renderer::shutdown()
 {
     bgfx::shutdown();
 }
 
-void renderer::render()
+void Renderer::render()
 {
     bgfx::touch(m_mainView);
     bgfx::frame();

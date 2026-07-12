@@ -1,6 +1,6 @@
-#include "ravengine/windows.h"
+#include "ravengine/window.h"
 #include "renderer.h"
-
+#include <windows.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
 #include <bx/platform.h>
@@ -68,7 +68,7 @@ bool show_basic_window(const char* title, int width, int height)
         return false;
     }
 
-    renderer renderer;
+    Renderer renderer;
     if (!renderer.init(native_window_handle,
                              native_display_handle,
                              static_cast<uint32_t>(width),
@@ -98,7 +98,7 @@ bool show_basic_window(const char* title, int width, int height)
             }
         }
 
-        renderer.render();
+        renderer.Render();
     }
 
     renderer.shutdown();

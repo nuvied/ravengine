@@ -16,6 +16,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+if(MSVC)
+    add_compile_options(/Zc:__cplusplus)
+	 add_compile_options(/Zc:preprocessor)
+endif()
+
+
 find_package(spdlog CONFIG REQUIRED)
 find_package(SDL2 CONFIG REQUIRED)
 find_package(bgfx CONFIG REQUIRED)
@@ -31,7 +37,7 @@ endif()
 add_executable(ravengine
 	src/main.cpp
 	src/engine.cpp
-	src/windows.cpp
+	src/window.cpp
 	src/renderer.cpp
 )
 
