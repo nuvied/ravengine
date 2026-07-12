@@ -2,6 +2,13 @@
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
 #include <cstdint>
+namespace ravengine {
+    class Renderer {
+    public:
+        bool init(void* nativeWindowHandle, void* nativeDisplayHandle, uint32_t width, uint32_t height);
+        void resize(uint32_t width, uint32_t height);
+        void shutdown();
+        void render();
 
 namespace ravengine {
 
